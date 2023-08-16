@@ -78,6 +78,12 @@ const isDateATuesday = (req, res, next) => {
     }
 }
 
+const isDuringBusinessHours = (req, res, next) => {
+    const { reservation_time } = req.body.data;
+
+    const submittedTime = moment(reservation_time)
+}
+
   module.exports = {
     peopleValidator,
     dateValidator,
