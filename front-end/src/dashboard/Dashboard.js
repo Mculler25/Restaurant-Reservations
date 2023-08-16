@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import moment from "moment/moment";
@@ -9,8 +9,18 @@ import moment from "moment/moment";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, reservationsError }) {
- 
+function Dashboard({ reservations, error }) {
+  const [currentTime, setCurrentTime ] = useState(moment())
+
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      setCurrentTime(moment());
+    }, 60000); 
+
+    return () => {
+      clearInterval(timeInterval);
+    };
+  },[])
 
   return (
     <main>
@@ -18,8 +28,8 @@ function Dashboard({ reservations, reservationsError }) {
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for date</h4>
       </div>
-      <h4>{moment().format('MMMM Do YYYY, h:mm:ss a')}</h4>
-      <ErrorAlert error={reservationsError} />
+      <h4>{currentTime.format('MMMM Do YYYY, h:mm a')}</h4>
+      <ErrorAlert error={error} />
       <ReservationsList reservations={reservations} />
     </main>
   );
