@@ -9,7 +9,7 @@ import moment from "moment/moment";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, reservationsError }) {
+function Dashboard({ reservations, error }) {
  
 
   return (
@@ -19,7 +19,7 @@ function Dashboard({ reservations, reservationsError }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <h4>{moment().format('MMMM Do YYYY, h:mm:ss a')}</h4>
-      <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={error} />
       <ReservationsList reservations={reservations} />
     </main>
   );

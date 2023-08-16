@@ -33,8 +33,7 @@ const Form = ({ initialFormData, headerText, submitHandler }) => {
         <label htmlFor="last_name">Last Name</label>
         <input type='text' name='last_name' id='last_name' required value={formData.last_name} onChange={handleInput}/>
         <label htmlFor="mobile_number">mobile_number</label>
-        <input type='tel' name="mobile_number" id="mobile_number"  
-        required value={formData.mobile_number} onChange={handleInput}/>
+        <input type='tel' name="mobile_number" id="mobile_number" required value={formData.mobile_number} onChange={handleInput}/>
         <label htmlFor="reservation_date">Reservation Date</label>
         <input type='date' name="reservation_date"  id="reservation_date" required value={formData.reservation_date} onChange={handleInput}/>
         <label htmlFor="reservation_time">Reservation Time</label>
