@@ -22,6 +22,12 @@ const create = async(req, res, _next) => {
   res.status(201).json({data : await service.create(req.body.data)})
 }
 
+const read = async(req, res, _next) => {
+  const { reservationId } = req.params;
+
+  res.status(200).json({data : await service.read(reservationId)})
+}
+
 module.exports = {
   list,
   create : [hasProperties(
@@ -37,5 +43,6 @@ module.exports = {
   isDateInPast,
   isDateATuesday,
   isDuringBusinessHours,
-  asyncErrorBoundary(create)]
+  asyncErrorBoundary(create)],
+  read : asyncErrorBoundary(read)
 };

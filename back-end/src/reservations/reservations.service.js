@@ -21,8 +21,16 @@ const listByDate = (date) => {
         .orderBy('reservation_time')
 }
 
+const read = (reservationId) => {
+    return knex(tableName)
+        .select("*")
+        .where({reservation_id : reservationId})
+        .first()
+}
+
 module.exports = {
     create,
     list,
-    listByDate
+    listByDate,
+    read
 }
