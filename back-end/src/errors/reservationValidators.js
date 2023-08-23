@@ -96,11 +96,29 @@ const isDuringBusinessHours = (req, res, next) => {
     }
 }
 
+const reservationExist = (readreservations) => {
+    return async(req , res, next) => {
+        const { reservationId } = req.params;
+        const reservation = await readreservations(reservationId)
+
+        if(reservation){
+            res.locals.reservation = reservation;
+            return next();
+        } else {
+            return next({
+                status : 404,
+                message : `reservation ${reservationId} does not exist`
+            })
+        }
+    }
+}
+
   module.exports = {
     peopleValidator,
     dateValidator,
     timeValidator,
     isDateInPast,
     isDateATuesday,
-    isDuringBusinessHours
+    isDuringBusinessHours,
+    reservationExist
   }

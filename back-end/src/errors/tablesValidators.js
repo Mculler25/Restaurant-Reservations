@@ -1,5 +1,5 @@
 
-const capacityValidator = (req, res, next) => {
+const capacityValidator = (req, _res, next) => {
     let { capacity } = req.body.data;
 
     if(!Number.isInteger(capacity)){
@@ -12,7 +12,7 @@ const capacityValidator = (req, res, next) => {
     }
 }
 
-const tableNameValidator = (req, res, next) => {
+const tableNameValidator = (req, _res, next) => {
     const { table_name } = req.body.data;
 
     if(table_name.length <= 1){
@@ -25,7 +25,25 @@ const tableNameValidator = (req, res, next) => {
     }
 }
 
+const tableExist = (readTables) => {
+    return async(req , res, next) => {
+        const { tableId } = req.params;
+        const table = await readTables(tableId)
+
+        if(table){
+            res.locals.table = table;
+            return next();
+        } else {
+            return next({
+                status : 404,
+                message : `table ${tableId} does not exist`
+            })
+        }
+    }
+}
+
 module.exports = {
     capacityValidator,
-    tableNameValidator
+    tableNameValidator,
+    tableExist
 }

@@ -14,7 +14,15 @@ const create = (newTable) => {
         .then(rows => rows[0])
 }
 
+const read = (tableId) => {
+    return knex(tableName)
+        .select("*")
+        .where({table_id : tableId})
+        .first()
+}
+
 module.exports = {
     list,
-    create
+    create,
+    read
 }
