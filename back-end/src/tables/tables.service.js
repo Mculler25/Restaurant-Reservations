@@ -21,8 +21,16 @@ const read = (tableId) => {
         .first()
 }
 
+const update = (reservationId, tableId) => {
+   return knex(tableName)
+        .where({table_id : tableId})
+        .update({
+            reservation_id : reservationId
+        }, ['reservation_id'])
+}
 module.exports = {
     list,
     create,
-    read
+    read,
+    update
 }

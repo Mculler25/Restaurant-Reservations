@@ -1,3 +1,4 @@
+const knex = require('../db/connection');
 
 const capacityValidator = (req, _res, next) => {
     let { capacity } = req.body.data;
@@ -42,8 +43,66 @@ const tableExist = (readTables) => {
     }
 }
 
+const reservationExist = (readreservations) => {
+    return async(req , res, next) => {
+        const { reservation_id } = req.body.data;
+        const reservation = await readreservations(reservation_id)
+
+        if(reservation){
+            res.locals.reservation = reservation;
+            return next();
+        } else {
+            return next({
+                status : 404,
+                message : `reservation ${reservation_id} does not exist`
+            })
+        }
+    }
+}
+
+const canReservationFit = async(req, res, next) => {
+    const { tableId } = req.params;
+   
+    
+    const reservation = await knex("reservations")
+        .select("*")
+        .where({reservation_id : req.body.data.reservation_id})
+        .first()
+
+
+    const table = await knex("tables")
+        .select("*")
+        .where({table_id : tableId})
+        .first()
+
+    if(!reservation){
+        next({
+            status: 404,
+            message: `Reservation ${reservation.reservation_id} not found`
+        })
+    } 
+
+    if(table.reservation_id) {
+        next({
+            status : 400,
+            message : "table is occupied"
+        })
+    }
+    
+    if(reservation.people <= table.capacity){
+       next()
+    } else {
+        next({
+            status : 400,
+            message : "table does not have enough capacity"
+        })
+    }
+}
+
 module.exports = {
     capacityValidator,
     tableNameValidator,
-    tableExist
+    tableExist,
+    canReservationFit,
+    reservationExist
 }
