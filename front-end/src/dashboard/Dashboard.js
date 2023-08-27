@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import moment from "moment/moment";
+import TablesList from "./TablesList";
 
 /**
  * Defines the dashboard page.
@@ -9,7 +10,7 @@ import moment from "moment/moment";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, error }) {
+function Dashboard({ reservations, error, tables }) {
   const [currentTime, setCurrentTime ] = useState(moment())
 
   useEffect(() => {
@@ -22,6 +23,8 @@ function Dashboard({ reservations, error }) {
     };
   },[])
 
+  
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -30,7 +33,10 @@ function Dashboard({ reservations, error }) {
       </div>
       <h4>{currentTime.format('MMMM Do YYYY, h:mm a')}</h4>
       <ErrorAlert error={error} />
+      
       <ReservationsList reservations={reservations} />
+    
+      <TablesList tables={tables} />
     </main>
   );
 }

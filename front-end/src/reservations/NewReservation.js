@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Form from './Form';
+import ReservationForm from './ReservationForm';
 import { createReservation } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -28,7 +28,7 @@ const NewReservation = ({setReservations, reservations}) => {
     }
     return (
         <section>
-            <Form 
+            <ReservationForm 
                 headerText="Create New Reservation"
                 initialFormData={initialFormData}
                 submitHandler={submitHandler}

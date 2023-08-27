@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const Form = ({ initialFormData, headerText, submitHandler }) => {
+const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
   const [formData, setFormData] = useState(initialFormData);
   const history = useHistory();
 
@@ -43,8 +43,9 @@ const Form = ({ initialFormData, headerText, submitHandler }) => {
         <input type='number' min='1' max='20' name="people" id="people" required value={formData.people} onChange={handleInput}/>
         <button type='submit'>Submit</button>
         <button onClick={handleCancel}>Cancel</button>
+        
     </form>
   )
 };
 
-export default Form;
+export default ReservationForm;
