@@ -10,7 +10,7 @@ import TablesList from "./TablesList";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, error, tables }) {
+function Dashboard({ reservations, error, tables, tablesError }) {
   const [currentTime, setCurrentTime ] = useState(moment())
 
   useEffect(() => {
@@ -33,9 +33,8 @@ function Dashboard({ reservations, error, tables }) {
       </div>
       <h4>{currentTime.format('MMMM Do YYYY, h:mm a')}</h4>
       <ErrorAlert error={error} />
-      
+      <ErrorAlert error={tablesError} />
       <ReservationsList reservations={reservations} />
-    
       <TablesList tables={tables} />
     </main>
   );

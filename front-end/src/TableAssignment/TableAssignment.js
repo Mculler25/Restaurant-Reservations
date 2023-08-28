@@ -3,11 +3,9 @@ import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min
 import { createTableAssignment } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 
-const TableAssignment = ({tables}) => {
+const TableAssignment = ({tables, setTabels}) => {
     const { reservationId } = useParams();
     const history = useHistory();
-
-    
 
     const initialFormData = {
         table_id : Infinity
@@ -23,12 +21,16 @@ const TableAssignment = ({tables}) => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const abortController = new AbortController()
-        createTableAssignment(reservationId, formData.table_id, abortController.signal)
-            .catch(error => setTableAssignmentError(error))
-        setFormData(initialFormData)
+        try {
+            await createTableAssignment(reservationId, formData.table_id, abortController.signal)
+            setFormData(initialFormData)
+            history.push("/dashboard")
+        } catch (error) {
+            setTableAssignmentError(error)
+        }
 
         return () => abortController.abort;
     }
@@ -52,7 +54,7 @@ const TableAssignment = ({tables}) => {
                         })
                     }
                 </select>
-                <button type='submit'>Submit</button>
+                <button type="submit">Submit</button>
                 <button onClick={handleCancel}>Cancel</button>
             </form>
             <ErrorAlert error={tableAssignmentError} />

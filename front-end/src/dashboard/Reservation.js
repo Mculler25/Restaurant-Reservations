@@ -13,7 +13,7 @@ const Reservation = ({reservation}) => {
             <p>reservation date :{reservation_date}</p>
             <p>reservation time : {reservation_time}</p>
             <p>people : {people}</p>
-            <button>
+            <button type='submit'>
                 <a href={`/reservations/${reservation_id}/seat`}>
                     Seat
                 </a>

@@ -1,5 +1,4 @@
 import React , {useState, useEffect} from "react";
-
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../reservations/NewReservation";
@@ -8,6 +7,7 @@ import TableAssignment from "../TableAssignment/TableAssignment";
 import NotFound from "./NotFound";
 import { listReservations, listTables } from "../utils/api";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+
 
 
 /**
@@ -29,7 +29,6 @@ function Routes({date}) {
  
 
   useEffect(loadDashboard, [date , dateParam]);
-
   function loadDashboard() {
     const abortController = new AbortController();
     listReservations(dateParam, abortController.signal)
@@ -44,7 +43,7 @@ function Routes({date}) {
       .then(setTables)
       .catch(setTablesErrors);
     return () => abortController.abort();
-  },[date])
+  },[date, location.pathname])
 
   return (
     <Switch>
@@ -55,16 +54,16 @@ function Routes({date}) {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables}/>
+        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError}/>
       </Route>
       <Route path='/reservations/new'>
         <NewReservation setReservations={setReservations} reservations={reservations}/>
       </Route>
       <Route path="/tables/new">
-        <NewTable tables={tables} setTables={setTables}/>
+        <NewTable tables={tables} setTables={setTables} />
       </Route>
       <Route path="/reservations/:reservationId/seat">
-        <TableAssignment tables={tables}/>
+        <TableAssignment tables={tables} setTables={setTables}/>
       </Route>
       <Route>
         <NotFound />
