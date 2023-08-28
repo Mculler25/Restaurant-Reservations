@@ -99,10 +99,29 @@ const canReservationFit = async(req, res, next) => {
     }
 }
 
+const isTableOccupied = async (req, res, next) => {
+    const { tableId } = req.params; 
+
+    const table = await knex("tables")
+            .select("*")
+            .where({table_id : tableId})
+            .first()
+    console.group(table)
+    if(table.reservation_id){
+        next();
+    } else {
+        next({
+            status : 400,
+            message : "table is not occupied"
+        })
+    }
+}
+
 module.exports = {
     capacityValidator,
     tableNameValidator,
     tableExist,
     canReservationFit,
-    reservationExist
+    reservationExist,
+    isTableOccupied
 }
