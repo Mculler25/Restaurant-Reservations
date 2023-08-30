@@ -7,7 +7,10 @@ const { peopleValidator,
   isDateInPast, 
   isDateATuesday, 
   isDuringBusinessHours,
-  reservationExist
+  reservationExist,
+  isStatusBooked,
+  isStatusAlreadyFinshed,
+  isStatusUnkown,
  } = require('../errors/reservationValidators')
 const service = require('./reservations.service')
 
@@ -30,9 +33,15 @@ const create = async(req, res, _next) => {
 }
 
 const read = async(req, res, _next) => {
-  const { reservationId } = req.params;
+  const { reservation_id } = req.params;
 
-  res.status(200).json({data : await service.read(reservationId)})
+  res.status(200).json({data : await service.read(reservation_id)})
+}
+
+const update = async (req, res, _next) => {
+  const { reservation_id } = req.params;
+  const { status } = req.body.data;
+  res.status(200).json({ data : await service.update(reservation_id, status)})
 }
 
 module.exports = {
@@ -50,9 +59,16 @@ module.exports = {
   isDateInPast,
   isDateATuesday,
   isDuringBusinessHours,
+  isStatusBooked,
   asyncErrorBoundary(create)],
   read : [
     reservationExist(service.read),
     asyncErrorBoundary(read)
+  ],
+  update : [
+    reservationExist(service.read),
+    isStatusUnkown,
+    isStatusAlreadyFinshed,
+    asyncErrorBoundary(update)
   ]
 };

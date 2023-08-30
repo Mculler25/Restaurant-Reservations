@@ -117,11 +117,29 @@ const isTableOccupied = async (req, res, next) => {
     }
 }
 
+const isReservationAlreadySeated = async (req, res, next) => {
+    
+    const reservation = await knex("reservations")
+        .select("*")
+        .where({reservation_id : req.body.data.reservation_id})
+        .first()
+    
+    if(reservation.status === "seated"){
+        next({
+            status : 400,
+            message : "This is reservation is already seated"
+        })
+    } else {
+        next();
+    }
+}
+
 module.exports = {
     capacityValidator,
     tableNameValidator,
     tableExist,
     canReservationFit,
     reservationExist,
-    isTableOccupied
+    isTableOccupied,
+    isReservationAlreadySeated
 }

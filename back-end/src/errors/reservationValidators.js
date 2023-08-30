@@ -1,4 +1,5 @@
 const moment = require('moment');
+const knex = require('../db/connection');
 
 const peopleValidator = (req, res, next) => {
     let { people } = req.body.data;
@@ -97,8 +98,8 @@ const isDuringBusinessHours = (req, res, next) => {
 
 const reservationExist = (readreservations) => {
     return async(req , res, next) => {
-        const { reservationId } = req.params;
-        const reservation = await readreservations(reservationId)
+        const { reservation_id } = req.params;
+        const reservation = await readreservations(reservation_id)
 
         if(reservation){
             res.locals.reservation = reservation;
@@ -106,9 +107,55 @@ const reservationExist = (readreservations) => {
         } else {
             return next({
                 status : 404,
-                message : `reservation ${reservationId} does not exist`
+                message : `reservation ${reservation_id} does not exist`
             })
         }
+    }
+}
+
+const isStatusBooked = (req, res, next) => {
+    const { status } = req.body.data;
+
+    if(status !== "booked") {
+        next({
+            status : 400,
+            message : `The status should be booked and not ${status}`
+        })
+    } else {
+        next();
+    }
+}
+
+const isStatusAlreadyFinshed = async (req, res, next) => {
+    const response = await knex("reservations")
+        .select("*")
+        .where({reservation_id : req.params.reservation_id})
+        .first();
+
+    if(response.status === "finished"){
+        next({
+            status : 400,
+            message : "The reservation status is already finished"
+        })
+    } else {
+        next();
+    }
+}
+
+const isStatusUnkown = (req, res, next) => {
+    const { status } = req.body.data;
+
+    if(status === "booked"){
+        next();
+    } else if (status === "seated"){
+        next();
+    } else if (status === "finished"){
+        next();
+    } else {
+        next ({
+            status : 400,
+            message : "The status is unknown"
+        })
     }
 }
 
@@ -119,5 +166,8 @@ const reservationExist = (readreservations) => {
     isDateInPast,
     isDateATuesday,
     isDuringBusinessHours,
-    reservationExist
+    reservationExist,
+    isStatusBooked,
+    isStatusAlreadyFinshed,
+    isStatusUnkown
   }

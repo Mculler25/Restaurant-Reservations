@@ -21,7 +21,12 @@ const read = (tableId) => {
         .first()
 }
 
-const update = (reservationId, tableId) => {
+const update = async (reservationId, tableId) => {
+    await knex("reservations")
+        .where({reservation_id : reservationId})
+        .update({
+            status : "seated"
+        }, ["status"])
    return knex(tableName)
         .where({table_id : tableId})
         .update({
@@ -29,15 +34,25 @@ const update = (reservationId, tableId) => {
         }, ['reservation_id'])
 }
 
-const deleteTableAssignent = (tableId) => {
-    knex(tableName)
+const deleteTableAssignent = async (tableId) => {
+    let reservationId = 0;
+    await knex(tableName)
+        .select("*")
+        .where({table_id : tableId})
+        .then(rows => rows[0])
+        .then(data => reservationId = data.reservation_id)
+    
+    await knex("reservations")
+        .where({reservation_id : reservationId})
+        .update({
+            status : "finished"
+        },["status"])
+    return knex(tableName)
         .where({table_id : tableId})
         .update({
             reservation_id : null
         }, ["reservation_id"])
         .returning("*")
-        .then(console.log)
-        
 }
  
 module.exports = {
