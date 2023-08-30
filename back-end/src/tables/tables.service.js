@@ -32,7 +32,12 @@ const update = (reservationId, tableId) => {
 const deleteTableAssignent = (tableId) => {
     knex(tableName)
         .where({table_id : tableId})
-        .del(tableName.reservation_id)
+        .update({
+            reservation_id : null
+        }, ["reservation_id"])
+        .returning("*")
+        .then(console.log)
+        
 }
  
 module.exports = {

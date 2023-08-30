@@ -79,7 +79,7 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         );
         await dialog.accept();
       });
-
+      
       await page.click(finishButtonSelector);
 
       await page.waitForResponse((response) => {

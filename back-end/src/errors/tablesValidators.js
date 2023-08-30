@@ -106,7 +106,7 @@ const isTableOccupied = async (req, res, next) => {
             .select("*")
             .where({table_id : tableId})
             .first()
-    console.group(table)
+    
     if(table.reservation_id){
         next();
     } else {
