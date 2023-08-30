@@ -23,6 +23,7 @@ function Routes({date}) {
   const [tables, setTables] = useState([])
   const [tablesError, setTablesErrors ] = useState(null);
 
+
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search)
   const dateParam = queryParam.get("date")
@@ -43,7 +44,7 @@ function Routes({date}) {
       .then(setTables)
       .catch(setTablesErrors);
     return () => abortController.abort();
-  },[date, location.pathname])
+  },[date, location])
 
   return (
     <Switch>
@@ -54,7 +55,7 @@ function Routes({date}) {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError}/>
+        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} />
       </Route>
       <Route path='/reservations/new'>
         <NewReservation setReservations={setReservations} reservations={reservations}/>
@@ -63,7 +64,7 @@ function Routes({date}) {
         <NewTable tables={tables} setTables={setTables} />
       </Route>
       <Route path="/reservations/:reservationId/seat">
-        <TableAssignment tables={tables} setTables={setTables}/>
+        <TableAssignment tables={tables} setTables={setTables} />
       </Route>
       <Route>
         <NotFound />

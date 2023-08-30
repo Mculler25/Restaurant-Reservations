@@ -10,7 +10,7 @@ import TablesList from "./TablesList";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, error, tables, tablesError }) {
+function Dashboard({ reservations, error, tables, tablesError , setWindowConfirm}) {
   const [currentTime, setCurrentTime ] = useState(moment())
 
   useEffect(() => {

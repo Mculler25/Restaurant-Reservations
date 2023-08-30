@@ -6,13 +6,14 @@ router.route("/")
     .get(controller.list)
     .post(controller.create)
     .all(methodNotAllowed);
-
-router.route("/:tableId")
+    
+    router.route("/:tableId")
     .get(controller.read)
     .all(methodNotAllowed);
-
-router.route("/:tableId/seat")
+    
+    router.route("/:tableId/seat")
     .put(controller.update)
+    .delete(controller.delete)
     .all(methodNotAllowed);
 
 
