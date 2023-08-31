@@ -7,8 +7,7 @@ import TableAssignment from "../TableAssignment/TableAssignment";
 import NotFound from "./NotFound";
 import { listReservations, listTables } from "../utils/api";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
-
-
+import SearchNumber from "../search/SearchNumber";
 
 /**
  * Defines all the routes for the application.
@@ -22,7 +21,7 @@ function Routes({date}) {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([])
   const [tablesError, setTablesErrors ] = useState(null);
-  const [isFinished , setIsFinished] = useState(false);
+  
 
 
   const location = useLocation();
@@ -46,7 +45,7 @@ function Routes({date}) {
       .then(setTables)
       .catch(setTablesErrors);
     return () => abortController.abort();
-  },[date, location.pathname, isFinished])
+  },[date, location.pathname])
 
   return (
     <Switch>
@@ -57,7 +56,7 @@ function Routes({date}) {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} isFinished={isFinished} setIsFinished={setIsFinished}/>
+        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} />
       </Route>
       <Route path='/reservations/new'>
         <NewReservation setReservations={setReservations} reservations={reservations}/>
@@ -67,6 +66,9 @@ function Routes({date}) {
       </Route>
       <Route path="/reservations/:reservationId/seat">
         <TableAssignment tables={tables} setTables={setTables} />
+      </Route>
+      <Route path="/search">
+        <SearchNumber />
       </Route>
       <Route>
         <NotFound />
