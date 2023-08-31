@@ -116,13 +116,15 @@ const reservationExist = (readreservations) => {
 const isStatusBooked = (req, res, next) => {
     const { status } = req.body.data;
 
-    if(status !== "booked") {
+    if(!status) {
+        next();
+    } else if(status === "booked"){
+        next();
+    } else {
         next({
             status : 400,
             message : `The status should be booked and not ${status}`
         })
-    } else {
-        next();
     }
 }
 

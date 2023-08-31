@@ -5,7 +5,7 @@ const ReservationsList = ({reservations}) => {
     
     return (
         <section>
-            {reservations.map((reservation, index) => <Reservation key={index} reservation={reservation} />)}
+            {reservations.map((reservation) => <Reservation key={reservation.mobile_number} reservation={reservation} />)}
         </section>
     )
 }

@@ -9,6 +9,7 @@ export default function Table({table}){
             deleteTableAssignemnt(table.table_id, abortController.signal)
             window.location.reload();
         } 
+        window.location.reload();
         return () => abortController.abort();
     }
     return (
