@@ -78,6 +78,13 @@ export async function listReservationsByPhoneNumber(mobile_number, signal){
       .then(formatReservationTime);
 }
 
+export async function readReservations(reservationId, signal){
+  const url = `${API_BASE_URL}/reservations/${reservationId}`
+  return await fetchJson(url, { headers, signal }, [])
+  .then(formatReservationDate)
+  .then(formatReservationTime);
+}
+
 
 /*
  * @param  
@@ -116,6 +123,28 @@ export async function createTableAssignment(reservationId, tableId, signal) {
     method : "PUT",
     headers,
     body : JSON.stringify({data : {reservation_id : reservationId}}),
+    signal
+  }
+  return await fetchJson(url, options, {})
+}
+
+export async function updateReservation(updatedReservation, signal){
+  const url = `${API_BASE_URL}/reservations/${updatedReservation.reservation_id}`
+  const options = {
+    method : "PUT",
+    headers,
+    body : JSON.stringify({data : updatedReservation}),
+    signal
+  }
+  return await fetchJson(url, options, updatedReservation)
+}
+
+export async function updateStatus(reservationId, signal){
+  const url = `${API_BASE_URL}/reservations/${reservationId}/status`
+  const options = {
+    method : "PUT",
+    headers,
+    body : JSON.stringify({data : { status : "cancelled"}}),
     signal
   }
   return await fetchJson(url, options, {})

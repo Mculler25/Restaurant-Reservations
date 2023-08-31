@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import { listReservations, listTables } from "../utils/api";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import SearchNumber from "../search/SearchNumber";
+import EditReservation from "../reservations/EditReservation";
 
 /**
  * Defines all the routes for the application.
@@ -69,6 +70,9 @@ function Routes({date}) {
       </Route>
       <Route path="/search">
         <SearchNumber />
+      </Route>
+      <Route path="/reservations/:reservationId/edit">
+        <EditReservation />
       </Route>
       <Route>
         <NotFound />
