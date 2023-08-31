@@ -43,8 +43,7 @@ const read = (reservationId) => {
         .first()
 }
 
-const update = (reservationId, statusGiven) => {
-    
+const updateStatus = (reservationId, statusGiven) => {
     return knex(tableName)
         .where({ reservation_id : reservationId})
         .update({
@@ -55,11 +54,20 @@ const update = (reservationId, statusGiven) => {
         
 }
 
+const updateReservation = (reservation) => {
+    return knex(tableName)
+        .where({reservation_id : reservation.reservation_id})
+        .update(reservation)
+        .returning("*")
+        .then(rows => rows[0])
+}
+
 module.exports = {
     create,
     list,
     listByDate,
     listByMobileNumber,
     read,
-    update
+    updateStatus,
+    updateReservation
 }
