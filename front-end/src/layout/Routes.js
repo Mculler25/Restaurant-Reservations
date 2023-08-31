@@ -22,6 +22,7 @@ function Routes({date}) {
   const [reservationsError, setReservationsError] = useState(null);
   const [tables, setTables] = useState([])
   const [tablesError, setTablesErrors ] = useState(null);
+  const [isFinished , setIsFinished] = useState(false);
 
 
   const location = useLocation();
@@ -29,7 +30,8 @@ function Routes({date}) {
   const dateParam = queryParam.get("date")
  
 
-  useEffect(loadDashboard, [date , dateParam]);
+  useEffect(loadDashboard, [date , dateParam, location.pathname]);
+  
   function loadDashboard() {
     const abortController = new AbortController();
     listReservations(dateParam, abortController.signal)
@@ -44,7 +46,7 @@ function Routes({date}) {
       .then(setTables)
       .catch(setTablesErrors);
     return () => abortController.abort();
-  },[date, location])
+  },[date, location.pathname, isFinished])
 
   return (
     <Switch>
@@ -55,7 +57,7 @@ function Routes({date}) {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} />
+        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} isFinished={isFinished} setIsFinished={setIsFinished}/>
       </Route>
       <Route path='/reservations/new'>
         <NewReservation setReservations={setReservations} reservations={reservations}/>

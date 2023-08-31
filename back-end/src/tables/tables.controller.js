@@ -1,7 +1,7 @@
 const P = require('pino');
 const hasProperties = require('../errors/hasProperties')
 const asyncErrorBoundary = require('../errors/asyncErrorBoundary')
-const {capacityValidator , tableNameValidator , tableExist, canReservationFit, reservationExist, isTableOccupied} = require('../errors/tablesValidators')
+const {capacityValidator , tableNameValidator , tableExist, canReservationFit, reservationExist, isTableOccupied, isReservationAlreadySeated} = require('../errors/tablesValidators')
 const reservationService = require("../reservations/reservations.service")
 const service = require('./tables.service');
 
@@ -58,6 +58,7 @@ module.exports = {
         hasProperties("reservation_id"),
         reservationExist(reservationService.read),
         canReservationFit,
+        isReservationAlreadySeated,
         asyncErrorBoundary(update)
     ],
     delete : [

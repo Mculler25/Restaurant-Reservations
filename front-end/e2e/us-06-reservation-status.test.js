@@ -40,7 +40,7 @@ describe("US-06 - Reservation status - E2E", () => {
         reservation_time: "13:45",
         people: 4,
       });
-
+      
       table = await createTable({
         table_name: `#${Date.now().toString(10)}`,
         capacity: 99,
@@ -56,6 +56,7 @@ describe("US-06 - Reservation status - E2E", () => {
     });
 
     test("/dashboard displays status", async () => {
+      
       await page.screenshot({
         path: ".screenshots/us-06-dashboard-displays-status.png",
         fullPage: true,

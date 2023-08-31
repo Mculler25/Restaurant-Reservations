@@ -111,7 +111,8 @@ describe("US-06 - Reservation status", () => {
       reservationOne.status = "finished";
       await knex("reservations")
         .where({ reservation_id: reservationOne.reservation_id })
-        .update(reservationOne, "*");
+        .update(reservationOne, "*")
+        
 
       const response = await request(app)
         .put(`/reservations/${reservationOne.reservation_id}/status`)
@@ -131,7 +132,7 @@ describe("US-06 - Reservation status", () => {
           .put(`/reservations/${reservationOne.reservation_id}/status`)
           .set("Accept", "application/json")
           .send({ data: { status } });
-
+        
         expect(response.body.data).toHaveProperty("status", status);
         expect(response.status).toBe(200);
       }
@@ -179,6 +180,7 @@ describe("US-06 - Reservation status", () => {
         .put(`/tables/${tableOne.table_id}/seat`)
         .set("Accept", "application/json")
         .send({ data: { reservation_id: reservationOne.reservation_id } });
+
 
       expect(firstSeatResponse.body.error).toBeUndefined();
       expect(firstSeatResponse.status).toBe(200);
@@ -275,7 +277,6 @@ describe("US-06 - Reservation status", () => {
         .set("Accept", "application/json");
 
       expect(reservationsResponse.body.error).toBeUndefined();
-
       const finishedReservations = reservationsResponse.body.data.filter(
         (reservation) => reservation.status === "finished"
       );
