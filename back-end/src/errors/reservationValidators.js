@@ -153,6 +153,8 @@ const isStatusUnkown = (req, res, next) => {
         next();
     } else if (status === "finished"){
         next();
+    } else if (status === "cancelled"){
+        next();
     } else {
         next ({
             status : 400,

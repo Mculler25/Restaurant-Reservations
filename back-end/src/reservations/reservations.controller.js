@@ -41,10 +41,15 @@ const read = async(req, res, _next) => {
   res.status(200).json({data : await service.read(reservation_id)})
 }
 
-const update = async (req, res, _next) => {
+const updateStatus = async (req, res, _next) => {
   const { reservation_id } = req.params;
   const { status } = req.body.data;
-  res.status(200).json({ data : await service.update(reservation_id, status)})
+  res.status(200).json({ data : await service.updateStatus(reservation_id, status)})
+}
+
+const updateReservation = async (req, res, next) => {
+  
+  res.json({ data : await service.updateReservation(req.body.data)})
 }
 
 module.exports = {
@@ -68,10 +73,27 @@ module.exports = {
     reservationExist(service.read),
     asyncErrorBoundary(read)
   ],
-  update : [
+  updateStatus : [
     reservationExist(service.read),
     isStatusUnkown,
     isStatusAlreadyFinshed,
-    asyncErrorBoundary(update)
+    asyncErrorBoundary(updateStatus)
+  ] , 
+  updateReservation : [
+    reservationExist(service.read),
+    hasProperties(
+      'first_name',
+      'last_name',
+      'mobile_number',
+      'reservation_date',
+      'reservation_time',
+      'people'
+    ), peopleValidator,
+    dateValidator,
+    timeValidator,
+    isDateInPast,
+    isDateATuesday,
+    isDuringBusinessHours,
+    asyncErrorBoundary(updateReservation)
   ]
 };

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
-  const [formData, setFormData] = useState(initialFormData);
-  const history = useHistory();
 
- 
+const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
+  
+  const [formData, setFormData] = useState({...initialFormData});
+  const history = useHistory();
+  
+
+  useEffect(() => {
+    setFormData(initialFormData)
+  }, [initialFormData])
 
   const handleInput = (e) => {
     setFormData({
@@ -13,7 +18,7 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
         [e.target.name] : e.target.value
     })
   }
-  
+ 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     formData.people = parseInt(formData.people)
@@ -22,14 +27,14 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
   }
   
   const handleCancel = () => {
-    history.push("/dashboard")
+    history.goBack();
   }
 
   return (
     <form onSubmit={handleFormSubmit} >
         <h2>{headerText}</h2>
         <label htmlFor="first_name">First Name</label>
-        <input type='text' name='first_name' id='first_name' required value={formData.first_name} onChange={handleInput}/>
+        <input type='text' name='first_name' id='first_name' required  value={formData.first_name} onChange={handleInput}/>
         <label htmlFor="last_name">Last Name</label>
         <input type='text' name='last_name' id='last_name' required value={formData.last_name} onChange={handleInput}/>
         <label htmlFor="mobile_number">mobile_number</label>

@@ -3,13 +3,13 @@ import { deleteTableAssignemnt } from '../utils/api';
 
 export default function Table({table}){
 
-    const handleCustomerLeaving = () => {
+    const handleCustomerLeaving = async () => {
         const abortController = new AbortController();
         if(window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-            deleteTableAssignemnt(table.table_id, abortController.signal)
+            await deleteTableAssignemnt(table.table_id, abortController.signal)
             window.location.reload();
         } 
-        window.location.reload();
+        
         return () => abortController.abort();
     }
     return (

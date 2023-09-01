@@ -1,13 +1,19 @@
 import React from 'react';
+import { updateStatus } from '../utils/api';
 
 
 const Reservation = ({reservation}) => {
     const {  reservation_id, first_name , last_name, mobile_number, reservation_date, reservation_time, people, status } = reservation;
-
+    const handleCancel = async () => {
+        if(window.confirm("Do you want to cancel this reservation? This cannot be undone.")){
+            await updateStatus(reservation_id)
+            window.location.reload();
+        }
+    }
     return (
         <>
         {
-            status !== "finished" ?
+            status !== "finished" && status !== "cancelled" ?
                 <div className='border border-primary'>
                     <h3>{last_name}, {first_name}</h3>
                     <p>mobile-number : {mobile_number}</p>
@@ -25,6 +31,14 @@ const Reservation = ({reservation}) => {
                         :
                         null
                     }
+                    <button>
+                        <a href={`/reservations/${reservation_id}/edit`}>
+                            Edit
+                        </a>
+                    </button>
+                    <button data-reservation-id-cancel={reservation.reservation_id} onClick={handleCancel}>
+                        cancel
+                    </button>
                 </div>
                 :
                 null
