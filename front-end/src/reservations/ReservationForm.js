@@ -1,6 +1,6 @@
 import React, { useState , useEffect} from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { formatAsTime } from "../utils/date-time";
+
 
 const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
   
@@ -22,7 +22,6 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     formData.people = parseInt(formData.people)
-    // console.log("this is the formData", formData)
     submitHandler(formData);
     setFormData({...initialFormData})
   }

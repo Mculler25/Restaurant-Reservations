@@ -86,8 +86,9 @@ export async function readReservations(reservationId, signal){
 }
 
 
-/*
- * @param  
+/*  creates a new reservation
+ * @param  reservation
+ *  
  */
 export async function createReservation(reservation, signal){
   
