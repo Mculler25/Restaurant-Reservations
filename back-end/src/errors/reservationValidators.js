@@ -59,7 +59,7 @@ const isDateInPast = (req, _res, next) => {
   const submitedDate = moment(reservation_date);
   const currentDate = moment();
 
-  if (submitedDate.isSameOrBefore(currentDate, "day")) {
+  if (submitedDate.isBefore(currentDate, "day")) {
     next({
       status: 400,
       message: "reservation date needs to be in the future",
