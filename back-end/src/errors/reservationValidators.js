@@ -55,8 +55,8 @@ const timeValidator = (req, _res, next) => {
 
 // make sure reservation is not in past
 const isDateInPast = (req, _res, next) => {
-  const { reservation_date } = req.body.data;
-  const submitedDate = moment(reservation_date);
+  const { reservation_date , reservation_time } = req.body.data;
+  const submitedDate = moment(`${reservation_date} ${reservation_time}`, "YYYY-MM-DD HH:mm");
   const currentDate = moment();
 
   if (submitedDate.isBefore(currentDate)) {
