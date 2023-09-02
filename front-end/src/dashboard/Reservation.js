@@ -1,5 +1,6 @@
 import React from "react";
 import { updateStatus } from "../utils/api";
+import { Link } from  "react-router-dom/cjs/react-router-dom.min";
 
 const Reservation = ({ reservation }) => {
   const {
@@ -17,11 +18,7 @@ const Reservation = ({ reservation }) => {
   // then update the reservation status to be "cancelled"
   const handleCancel = async () => {
     const abortController = new AbortController();
-    if (
-      window.confirm(
-        "Do you want to cancel this reservation? This cannot be undone."
-      )
-    ) {
+    if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
       await updateStatus(reservation_id, abortController.signal);
       // reload page to update reservations showing
       window.location.reload();
@@ -42,20 +39,14 @@ const Reservation = ({ reservation }) => {
           <p>people : {people}</p>
           <p data-reservation-id-status={reservation_id}>status : {status}</p>
           <button type="submit" className="btn btn-danger m-3">
-            <a
-              href={`/reservations/${reservation_id}/seat`}
-              className="text-white"
-            >
+            <Link to={`/reservations/${reservation_id}/seat`}>
               Seat
-            </a>
+            </Link>
           </button>
           <button className="btn btn-danger m-3">
-            <a
-              href={`/reservations/${reservation_id}/edit`}
-              className="text-white"
-            >
+            <Link to={`/reservations/${reservation_id}/edit`}>
               Edit
-            </a>
+            </Link>
           </button>
           <button
             data-reservation-id-cancel={reservation.reservation_id}

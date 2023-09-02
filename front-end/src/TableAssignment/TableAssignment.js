@@ -3,7 +3,7 @@ import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min
 import { createTableAssignment } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 
-const TableAssignment = ({ tables, dateParam }) => {
+const TableAssignment = ({ tables }) => {
   const { reservationId } = useParams();
   const history = useHistory();
 
