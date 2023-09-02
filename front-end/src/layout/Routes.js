@@ -1,4 +1,4 @@
-import React , {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../reservations/NewReservation";
@@ -17,36 +17,66 @@ import EditReservation from "../reservations/EditReservation";
  *
  * @returns {JSX.Element}
  */
-function Routes({date}) {
+function Routes({ date }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
-  const [tables, setTables] = useState([])
-  const [tablesError, setTablesErrors ] = useState(null);
-  
-
+  const [tables, setTables] = useState([]);
+  const [tablesError, setTablesErrors] = useState(null);
+  const [dateToDisplayReservationsOn, setDateToDisplayReservationsOn] = useState(date);
+  const [dateParam, setDateParam] = useState(null);
 
   const location = useLocation();
-  const queryParam = new URLSearchParams(location.search)
-  const dateParam = queryParam.get("date")
- 
+  const queryParam = new URLSearchParams(location.search);
+  const getDateParam = queryParam.get("date");
 
-  useEffect(loadDashboard, [date , dateParam, location.pathname]);
-  
-  function loadDashboard() {
-    const abortController = new AbortController();
-    listReservations(dateParam, abortController.signal)
-      .then(setReservations)
-      .catch(setReservationsError);
-    return () => abortController.abort();
-  }
+  // if there is a dateParam enter save it
+  useEffect(() => {
+    setDateParam(getDateParam);
+  }, [getDateParam]);
 
+  // fetch reservations by date
+  // if there is a date param entered get reservations by that date
+  // if there is not date param entered get reservations by the date that is showing
   useEffect(() => {
     const abortController = new AbortController();
-    listTables(abortController.signal)
-      .then(setTables)
-      .catch(setTablesErrors);
+    if (dateParam) {
+      const getReservationsByDateParam = async () => {
+        try {
+          const response = await listReservations(dateParam, abortController.signal)
+          setReservations(response)
+        } catch (error) {
+          setReservationsError(error)
+        }
+      }
+      getReservationsByDateParam();
+    } else {
+      const getReservationsByDateDisplayed = async () => {
+        try {
+          const response = await listReservations(dateToDisplayReservationsOn, abortController.signal)
+          setReservations(response)
+        } catch (error) {
+          setReservationsError(error)
+        }
+      }
+      getReservationsByDateDisplayed();
+    }
     return () => abortController.abort();
-  },[date, location.pathname])
+  }, [date, dateParam, dateToDisplayReservationsOn, location.pathname]);
+
+  // fetch tables 
+  useEffect(() => {
+    const abortController = new AbortController();
+    const getTables = async () => {
+      try {
+        const response = await listTables(abortController.signal);
+        setTables(response)
+      } catch (error) {
+        setTablesErrors(error)
+      }
+    }
+    getTables();
+    return () => abortController.abort();
+  }, [date, location.pathname]);
 
   return (
     <Switch>
@@ -57,16 +87,35 @@ function Routes({date}) {
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
-        <Dashboard date={date} reservations={reservations} error={reservationsError} tables={tables} tablesError={tablesError} />
+        <Dashboard
+          date={date}
+          reservations={reservations}
+          error={reservationsError}
+          tables={tables}
+          tablesError={tablesError}
+          dateToDisplayReservationsOn={dateToDisplayReservationsOn}
+          setDateToDisplayReservationsOn={setDateToDisplayReservationsOn}
+          todaysDate={date}
+          setDateParam={setDateParam}
+          dateParam={dateParam}
+        />
       </Route>
-      <Route path='/reservations/new'>
-        <NewReservation setReservations={setReservations} reservations={reservations}/>
+      <Route path="/reservations/new">
+        <NewReservation
+          setReservations={setReservations}
+          reservations={reservations}
+        />
       </Route>
       <Route path="/tables/new">
         <NewTable tables={tables} setTables={setTables} />
       </Route>
       <Route path="/reservations/:reservationId/seat">
-        <TableAssignment tables={tables} setTables={setTables} />
+        <TableAssignment
+          tables={tables}
+          setTables={setTables}
+          dateToDisplayReservationsOn={dateToDisplayReservationsOn}
+          dateParam={dateParam}
+        />
       </Route>
       <Route path="/search">
         <SearchNumber />

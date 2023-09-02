@@ -10,32 +10,51 @@ import TablesList from "./TablesList";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ reservations, error, tables, tablesError }) {
-  const [currentTime, setCurrentTime ] = useState(moment())
+function Dashboard({
+  reservations,
+  error,
+  tables,
+  tablesError,
+  dateToDisplayReservationsOn,
+  setDateToDisplayReservationsOn,
+  todaysDate,
+  dateParam,
+  setDateParam,
+}) {
+  const [currentTime, setCurrentTime] = useState(moment());
 
+  // get the time every minute to display
   useEffect(() => {
     const timeInterval = setInterval(() => {
       setCurrentTime(moment());
-    }, 60000); 
+    }, 60000);
 
     return () => {
       clearInterval(timeInterval);
     };
-  },[])
-
-  
+  }, []);
 
   return (
     <main>
-      <h1>Dashboard</h1>
-      <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for date</h4>
+      <div className="text-center">
+        <h3 className="text-white ms-3">Dashboard</h3>
+        <h3 className="text-white me-5">
+          {currentTime.format("MMMM Do YYYY, h:mm a")}
+        </h3>
       </div>
-      <h4>{currentTime.format('MMMM Do YYYY, h:mm a')}</h4>
       <ErrorAlert error={error} />
       <ErrorAlert error={tablesError} />
-      <ReservationsList reservations={reservations} />
-      <TablesList tables={tables} />
+      <div className="container text-center ">
+        <ReservationsList
+          reservations={reservations}
+          dateToDisplayReservationsOn={dateToDisplayReservationsOn}
+          setDateToDisplayReservationsOn={setDateToDisplayReservationsOn}
+          todaysDate={todaysDate}
+          setDateParam={setDateParam}
+          dateParam={dateParam}
+        />
+        <TablesList tables={tables} reservations={reservations} />
+      </div>
     </main>
   );
 }

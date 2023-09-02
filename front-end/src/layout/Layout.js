@@ -15,11 +15,11 @@ import "./Layout.css";
 function Layout() {
   return (
     <div className="container-fluid">
-      <div className="row h-100">
-        <div className="col-md-2 side-bar">
+      <div className="row vh-100">
+        <div className="col-md-2 side-bar bg-danger">
           <Menu />
         </div>
-        <div className="col">
+        <div className="col bg-dark">
           <Routes date={today()}/>
         </div>
       </div>

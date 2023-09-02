@@ -1,50 +1,73 @@
-import React from 'react';
-import { updateStatus } from '../utils/api';
+import React from "react";
+import { updateStatus } from "../utils/api";
 
+const Reservation = ({ reservation }) => {
+  const {
+    reservation_id,
+    first_name,
+    last_name,
+    mobile_number,
+    reservation_date,
+    reservation_time,
+    people,
+    status,
+  } = reservation;
 
-const Reservation = ({reservation}) => {
-    const {  reservation_id, first_name , last_name, mobile_number, reservation_date, reservation_time, people, status } = reservation;
-    const handleCancel = async () => {
-        if(window.confirm("Do you want to cancel this reservation? This cannot be undone.")){
-            await updateStatus(reservation_id)
-            window.location.reload();
-        }
+  // if user hit cancel, confirm thats what they would like to do
+  // then update the reservation status to be "cancelled"
+  const handleCancel = async () => {
+    const abortController = new AbortController();
+    if (
+      window.confirm(
+        "Do you want to cancel this reservation? This cannot be undone."
+      )
+    ) {
+      await updateStatus(reservation_id, abortController.signal);
+      // reload page to update reservations showing
+      window.location.reload();
     }
-    return (
-        <>
-        {
-            status !== "finished" && status !== "cancelled" ?
-                <div className='border border-primary'>
-                    <h3>{last_name}, {first_name}</h3>
-                    <p>mobile-number : {mobile_number}</p>
-                    <p>reservation date :{reservation_date}</p>
-                    <p>reservation time : {reservation_time}</p>
-                    <p>people : {people}</p>
-                    <p data-reservation-id-status={reservation_id}>status : {status}</p>
-                    {
-                        status === "booked" ? 
-                            <button type='submit'>
-                                <a href={`/reservations/${reservation_id}/seat`}>
-                                    Seat
-                                </a>
-                            </button>
-                        :
-                        null
-                    }
-                    <button>
-                        <a href={`/reservations/${reservation_id}/edit`}>
-                            Edit
-                        </a>
-                    </button>
-                    <button data-reservation-id-cancel={reservation.reservation_id} onClick={handleCancel}>
-                        cancel
-                    </button>
-                </div>
-                :
-                null
-        }
-        </>
-    )
-}
+    return () => abortController.abort();
+  };
+
+  return (
+    <>
+      {status === "booked" ? (
+        <div className="border rounded border-danger text-white text-center p-5 m-4">
+          <h3>
+            {last_name}, {first_name}
+          </h3>
+          <p>mobile-number : {mobile_number}</p>
+          <p>reservation date :{reservation_date}</p>
+          <p>reservation time : {reservation_time}</p>
+          <p>people : {people}</p>
+          <p data-reservation-id-status={reservation_id}>status : {status}</p>
+          <button type="submit" className="btn btn-danger m-3">
+            <a
+              href={`/reservations/${reservation_id}/seat`}
+              className="text-white"
+            >
+              Seat
+            </a>
+          </button>
+          <button className="btn btn-danger m-3">
+            <a
+              href={`/reservations/${reservation_id}/edit`}
+              className="text-white"
+            >
+              Edit
+            </a>
+          </button>
+          <button
+            data-reservation-id-cancel={reservation.reservation_id}
+            onClick={handleCancel}
+            className="btn btn-danger m-3"
+          >
+            Cancel
+          </button>
+        </div>
+      ) : null}
+    </>
+  );
+};
 
 export default Reservation;
