@@ -39,12 +39,12 @@ const Reservation = ({ reservation }) => {
           <p>people : {people}</p>
           <p data-reservation-id-status={reservation_id}>status : {status}</p>
           <button type="submit" className="btn btn-danger m-3">
-            <Link to={`/reservations/${reservation_id}/seat`}>
+            <Link to={`/reservations/${reservation_id}/seat`} className="text-white">
               Seat
             </Link>
           </button>
           <button className="btn btn-danger m-3">
-            <Link to={`/reservations/${reservation_id}/edit`}>
+            <Link to={`/reservations/${reservation_id}/edit`} className="text-white">
               Edit
             </Link>
           </button>
