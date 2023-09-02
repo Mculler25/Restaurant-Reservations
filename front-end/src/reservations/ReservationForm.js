@@ -22,6 +22,7 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
     e.preventDefault();
     // change people from string to number
     formData.people = parseInt(formData.people);
+    console.log(formData)
     submitHandler(formData);
     // set formData back to the initialFormData
     setFormData({ ...initialFormData });
