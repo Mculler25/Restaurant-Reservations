@@ -1,10 +1,14 @@
 import React from "react";
 import Table from "./Table";
 
-export default function TablesList({tables}){
+const TablesList = ({tables, reservations}) => {
+    // map over the tables to display each table
     return (
         <section>
-            {tables.map((table) => <Table key={table.table_name} table={table}/>)}
+            <h1 className="text-white m-2">Tables</h1>
+            {tables.map((table) => <Table key={table.table_id} table={table} reservations={reservations}/>)}
         </section>
     )
 }
+
+export default TablesList

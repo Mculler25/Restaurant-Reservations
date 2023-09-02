@@ -29,20 +29,24 @@ const SearchNumber = () => {
         return () => abortController.abort();
     }
     return (
-        <section>
+        <section className="border rounder border-danger text-white m-3">
             <form onSubmit={onSubmit}>
-                <h1>Search By Mobile Number</h1>
-                <label htmlFor="mobile_number">Mobile Number</label>
-                <input type="tel" name="mobile_number" id="mobile_number" value={formData.mobile_number} onChange={handleChange}/>
-                <button type="submit">Find</button>
+                <h1 className="m-5 text-center">Search By Mobile Number</h1>
+                <div className="text-center">
+                    <label htmlFor="mobile_number">Mobile Number: </label>
+                    <input type="tel" name="mobile_number" id="mobile_number" value={formData.mobile_number} onChange={handleChange} className="m-3 bg-dark text-white"/>
+                </div>
+                <div className="text-center m-3">
+                    <button type="submit" className="btn btn-danger m-2">Find</button>
+                </div>
             </form>
             {
                 reservationByNumber.length !== 0 ?
-                    <section>
+                    <section className="text-center">
                         <ReservationsList reservations={reservationByNumber} />
                     </section>
                 :
-                <p>No reservations found</p>
+                <h3 className="text-center m-5">No reservations found</h3>
             }
             <ErrorAlert error={reservationByNumberError} />
         </section>
