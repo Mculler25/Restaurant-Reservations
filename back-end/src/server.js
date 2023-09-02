@@ -4,7 +4,7 @@ const app = require("./app");
 const knex = require("./db/connection");
 
 knex.migrate
-  .rollback({}, true) // Rollback all migrations
+  .latest()
   .then((migrations) => {
     console.log("migrations", migrations);
     app.listen(PORT, listener);
