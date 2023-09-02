@@ -19,7 +19,6 @@ const NewReservation = ({ setReservations, reservations }) => {
   // on submit create a resevation
   const submitHandler = async (formData) => {
     try {
-      console.log(formData)
       const data = await createReservation(formData);
       // add new reservation to all reservations shown
       setReservations([...reservations, data]);
