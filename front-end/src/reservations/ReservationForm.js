@@ -27,7 +27,7 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
     setFormData({ ...initialFormData });
   };
 
-  // when use hits cancel go back to previous page
+  // when use hits cancel go back to dashboard
   const handleCancel = () => {
     history.push("/dashboard");
   };
