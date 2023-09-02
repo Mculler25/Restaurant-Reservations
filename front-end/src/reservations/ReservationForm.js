@@ -29,7 +29,7 @@ const ReservationForm = ({ initialFormData, headerText, submitHandler }) => {
 
   // when use hits cancel go back to previous page
   const handleCancel = () => {
-    history.goBack();
+    history.push("/dashboard");
   };
 
   return (
