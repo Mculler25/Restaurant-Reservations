@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { deleteTableAssignemnt, readReservations } from "../utils/api";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Table = ({ table }) => {
   const [reservationAtTable, setReservationAtTable] = useState({});
-
+  const history = useHistory();
   // fetch the reservation at the table
   useEffect(() => {
     const getReservationAtTable = async () => {
@@ -25,7 +26,7 @@ const Table = ({ table }) => {
     if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
       await deleteTableAssignemnt(table.table_id, abortController.signal);
       // refresh the page to show new table status
-      window.location.reload();
+      history.go(0);
     }
 
     return () => abortController.abort();
