@@ -21,7 +21,7 @@ const Reservation = ({ reservation }) => {
     if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
       await updateStatus(reservation_id, abortController.signal);
       // reload page to update reservations showing
-      window.location.reload(true);
+      window.location.reload(false);
     }
     return () => abortController.abort();
   };
