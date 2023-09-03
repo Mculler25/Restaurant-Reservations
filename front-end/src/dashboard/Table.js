@@ -26,7 +26,7 @@ const Table = ({ table }) => {
     if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
       await deleteTableAssignemnt(table.table_id, abortController.signal);
       // refresh the page to show new table status
-      history.go(0);
+      window.location.reload(true)
     }
 
     return () => abortController.abort();
