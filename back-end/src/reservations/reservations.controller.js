@@ -16,17 +16,16 @@ const service = require("./reservations.service");
 
 async function list(req, res) {
   const { date, mobile_number } = req.query;
+  let serviceData = null;
   if (date) {
-    res.json({
-      data: await service.listByDate(date),
-    });
+    serviceData = await service.listByDate(date)
   } else if (mobile_number) {
-    res.json({ data: await service.listByMobileNumber(mobile_number) });
+    serviceData = await service.listByMobileNumber(mobile_number)
   } else {
-    res.json({
-      data: await service.list(),
-    });
+    serviceData = await service.list()
   }
+
+  res.json({data : serviceData})
 }
 
 const create = async (req, res, _next) => {
