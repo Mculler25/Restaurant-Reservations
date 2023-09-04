@@ -3,6 +3,8 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import moment from "moment/moment";
 import TablesList from "./TablesList";
+import winston from "winston/lib/winston/config";
+
 
 /**
  * Defines the dashboard page.
@@ -22,16 +24,25 @@ function Dashboard({
   setDateParam,
 }) {
   const [currentTime, setCurrentTime] = useState(moment());
+  const [timeError , setTimeError] = useState(null)
 
   // get the time every minute to display
   useEffect(() => {
-    const timeInterval = setInterval(() => {
-      setCurrentTime(moment());
-    }, 60000);
+    try {
+      const timeInterval = setInterval(() => {
+        setCurrentTime(moment());
+      }, 60000);
+      
+      return () => {
+        clearInterval(timeInterval);
+      };
+    } catch (error) {
+      
+      winston.debug(`The error is in the dashboard file : ${error.message}`)
+    // set the error
+      setTimeError(error);
+    }
 
-    return () => {
-      clearInterval(timeInterval);
-    };
   }, []);
 
   return (
@@ -44,6 +55,7 @@ function Dashboard({
       </div>
       <ErrorAlert error={error} />
       <ErrorAlert error={tablesError} />
+      <ErrorAlert error={timeError} />
       <div className="container text-center ">
         <ReservationsList
           reservations={reservations}

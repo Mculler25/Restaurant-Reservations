@@ -1,6 +1,8 @@
-import React from "react";
+import React , {useState} from "react";
 import { updateStatus } from "../utils/api";
 import { Link } from  "react-router-dom";
+import ErrorAlert from "../layout/ErrorAlert";
+import winston from "winston/lib/winston/config";
 
 const Reservation = ({ reservation }) => {
   const {
@@ -14,14 +16,21 @@ const Reservation = ({ reservation }) => {
     status,
   } = reservation;
 
+  const [updateStatusError , setUpdateStatusError] = useState(null)
   // if user hit cancel, confirm thats what they would like to do
   // then update the reservation status to be "cancelled"
   const handleCancel = async () => {
     const abortController = new AbortController();
-    if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
-      await updateStatus(reservation_id, abortController.signal);
-      // reload page to update reservations showing
-      window.location.reload();
+    try {
+      if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+        await updateStatus(reservation_id, abortController.signal);
+        // reload page to update reservations showing
+        window.location.reload();
+      }
+    } catch (error) {
+      winston.debug(`This error occured in the Reservation file : ${error.message}`)
+      //set error
+      setUpdateStatusError(error);
     }
     return () => abortController.abort();
   };
@@ -55,6 +64,7 @@ const Reservation = ({ reservation }) => {
           >
             Cancel
           </button>
+          <ErrorAlert error={updateStatusError} />
         </div>
       ) : null}
     </>

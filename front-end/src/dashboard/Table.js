@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { deleteTableAssignemnt, readReservations } from "../utils/api";
+import winston from "winston/lib/winston/config";
+import ErrorAlert from "../layout/ErrorAlert";
 
 
 const Table = ({ table }) => {
-  const [reservationAtTable, setReservationAtTable] = useState({});
+  const [reservationAtTable, setReservationAtTable] = useState(null);
+  const [reservationAtTableError , setReservationAtTableError] = useState(null)
+  const [deleteError , setDeleteError ] = useState(null);
   // fetch the reservation at the table
   useEffect(() => {
     const getReservationAtTable = async () => {
@@ -12,7 +16,10 @@ const Table = ({ table }) => {
           const data = await readReservations(table.reservation_id);
           setReservationAtTable(data);
         } catch (error) {
-          console.log(error.message);
+          //log error
+          winston.debug(`This error occured in the Table file : ${error.message}`)
+          //set error
+          setReservationAtTableError(error)
         }
       }
     };
@@ -22,10 +29,17 @@ const Table = ({ table }) => {
   // when the customer leaves delete the table assignment to free table
   const handleCustomerLeaving = async () => {
     const abortController = new AbortController();
-    if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-      await deleteTableAssignemnt(table.table_id, abortController.signal);
-      // refresh the page to show new table status
-      window.location.reload()
+    try {
+      if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
+        await deleteTableAssignemnt(table.table_id, abortController.signal);
+        // refresh the page to show new table status
+        window.location.reload()
+      }
+    } catch (error) {
+      // log the error
+      winston.debug(`This error occured in the Table File : ${error.message}`)
+      // set the error
+      setDeleteError(error)
     }
 
     return () => abortController.abort();
@@ -54,6 +68,8 @@ const Table = ({ table }) => {
             >
               Finish
             </button>
+            <ErrorAlert error={deleteError} />
+            <ErrorAlert error={reservationAtTableError} />
           </div>
         </>
       ) : (
