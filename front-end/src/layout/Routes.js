@@ -6,7 +6,7 @@ import NewTable from "../tables/NewTable";
 import TableAssignment from "../TableAssignment/TableAssignment";
 import NotFound from "./NotFound";
 import { listReservations, listTables } from "../utils/api";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useLocation } from "react-router-dom";
 import SearchNumber from "../search/SearchNumber";
 import EditReservation from "../reservations/EditReservation";
 

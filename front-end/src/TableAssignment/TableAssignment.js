@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom";
 import { createTableAssignment } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 

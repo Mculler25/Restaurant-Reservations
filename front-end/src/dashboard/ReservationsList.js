@@ -1,7 +1,7 @@
 import React from "react";
 import Reservation from "./Reservation";
 import { asDateString } from "../utils/date-time";
-import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import { useLocation } from "react-router-dom";
 
 const ReservationsList = ({
   reservations,

@@ -1,6 +1,6 @@
 import React from "react";
 import { updateStatus } from "../utils/api";
-import { Link } from  "react-router-dom/cjs/react-router-dom.min";
+import { Link } from  "react-router-dom";
 
 const Reservation = ({ reservation }) => {
   const {
@@ -21,7 +21,7 @@ const Reservation = ({ reservation }) => {
     if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
       await updateStatus(reservation_id, abortController.signal);
       // reload page to update reservations showing
-      window.location.reload(false);
+      window.location.reload();
     }
     return () => abortController.abort();
   };
