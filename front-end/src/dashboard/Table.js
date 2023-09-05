@@ -23,7 +23,6 @@ const Table = ({ table }) => {
     };
     getReservationAtTable();
   }, [table.reservation_id]);
-  console.log("This is the reservation id", table.reservation_id);
 
   // when the customer leaves delete the table assignment to free table
   const handleCustomerLeaving = async () => {
