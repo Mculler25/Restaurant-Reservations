@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { deleteTableAssignemnt, readReservations } from "../utils/api";
-import winston from "winston/lib/winston/config";
 import ErrorAlert from "../layout/ErrorAlert";
+
 
 
 const Table = ({ table }) => {
   const [reservationAtTable, setReservationAtTable] = useState(null);
   const [reservationAtTableError , setReservationAtTableError] = useState(null)
   const [deleteError , setDeleteError ] = useState(null);
-  // fetch the reservation at the table
+  // for loading table data to display for seated tables
   useEffect(() => {
     const getReservationAtTable = async () => {
       if (table.reservation_id) {
@@ -16,8 +16,6 @@ const Table = ({ table }) => {
           const data = await readReservations(table.reservation_id);
           setReservationAtTable(data);
         } catch (error) {
-          //log error
-          winston.debug(`This error occured in the Table file : ${error.message}`)
           //set error
           setReservationAtTableError(error)
         }
@@ -25,6 +23,7 @@ const Table = ({ table }) => {
     };
     getReservationAtTable();
   }, [table.reservation_id]);
+  console.log("This is the reservation id", table.reservation_id);
 
   // when the customer leaves delete the table assignment to free table
   const handleCustomerLeaving = async () => {
@@ -36,8 +35,6 @@ const Table = ({ table }) => {
         window.location.reload()
       }
     } catch (error) {
-      // log the error
-      winston.debug(`This error occured in the Table File : ${error.message}`)
       // set the error
       setDeleteError(error)
     }
@@ -50,7 +47,7 @@ const Table = ({ table }) => {
       <h2>Table Name : {table.table_name}</h2>
       <h2>Capacity : {table.capacity}</h2>
       {/* if there is a reservation assigned to the table, display it */}
-      {table.reservation_id ? (
+      {table.reservation_id && reservationAtTable ? (
         <>
           <p data-table-id-status={table.table_id}>Table Status : occupied</p>
           <div className="border rounded border-danger p-5 m-4">
@@ -61,6 +58,7 @@ const Table = ({ table }) => {
             <p data-reservation-id-status={reservationAtTable.reservation_id}>
               Status : {reservationAtTable.status}
             </p>
+            <p>Reservation Info</p>
             <button
               data-table-id-finish={table.table_id}
               onClick={handleCustomerLeaving}

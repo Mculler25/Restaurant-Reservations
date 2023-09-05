@@ -9,7 +9,7 @@ import { listReservations, listTables } from "../utils/api";
 import { useLocation } from "react-router-dom";
 import SearchNumber from "../search/SearchNumber";
 import EditReservation from "../reservations/EditReservation";
-import winston from "winston/lib/winston/config";
+
 
 /**
  * Defines all the routes for the application.
@@ -46,7 +46,7 @@ function Routes({ date }) {
           const response = await listReservations(dateParam, abortController.signal)
           setReservations(response)
         } catch (error) {
-          winston.debug(`This error occured in the Routes File: ${error.message}`)
+
           setReservationsError(error)
         }
       }
@@ -57,7 +57,6 @@ function Routes({ date }) {
           const response = await listReservations(dateToDisplayReservationsOn, abortController.signal)
           setReservations(response)
         } catch (error) {
-          winston.debug(`This error occured in the Routes File: ${error.message}`)
           setReservationsError(error)
         }
       }
@@ -74,7 +73,6 @@ function Routes({ date }) {
         const response = await listTables(abortController.signal);
         setTables(response)
       } catch (error) {
-        winston.debug(`This error occured in the Routes File: ${error.message}`)
         setTablesErrors(error)
       }
     }
@@ -84,12 +82,6 @@ function Routes({ date }) {
 
   return (
     <Switch>
-      <Route exact={true} path="/">
-        <Redirect to={"/dashboard"} />
-      </Route>
-      <Route exact={true} path="/reservations">
-        <Redirect to={"/dashboard"} />
-      </Route>
       <Route path="/dashboard">
         <Dashboard
           date={date}
@@ -126,6 +118,12 @@ function Routes({ date }) {
       </Route>
       <Route path="/reservations/:reservationId/edit">
         <EditReservation />
+      </Route>
+      <Route exact={true} path="/reservations">
+        <Redirect to={"/dashboard"} />
+      </Route>
+      <Route exact={true} path="/">
+        <Redirect to={"/dashboard"} />
       </Route>
       <Route>
         <NotFound />

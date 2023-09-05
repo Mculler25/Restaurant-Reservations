@@ -2,7 +2,7 @@ import React , {useState} from "react";
 import { updateStatus } from "../utils/api";
 import { Link } from  "react-router-dom";
 import ErrorAlert from "../layout/ErrorAlert";
-import winston from "winston/lib/winston/config";
+
 
 const Reservation = ({ reservation }) => {
   const {
@@ -28,7 +28,6 @@ const Reservation = ({ reservation }) => {
         window.location.reload();
       }
     } catch (error) {
-      winston.debug(`This error occured in the Reservation file : ${error.message}`)
       //set error
       setUpdateStatusError(error);
     }

@@ -3,7 +3,6 @@ import ErrorAlert from "../layout/ErrorAlert";
 import ReservationsList from "./ReservationsList";
 import moment from "moment/moment";
 import TablesList from "./TablesList";
-import winston from "winston/lib/winston/config";
 
 
 /**
@@ -37,8 +36,6 @@ function Dashboard({
         clearInterval(timeInterval);
       };
     } catch (error) {
-      
-      winston.debug(`The error is in the dashboard file : ${error.message}`)
     // set the error
       setTimeError(error);
     }
