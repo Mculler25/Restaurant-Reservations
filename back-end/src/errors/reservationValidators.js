@@ -150,7 +150,7 @@ const isStatusAlreadyFinshed = async (req, res, next) => {
   }
 };
 
-const isStatusUnkown = (req, res, next) => {
+const isStatusUnkown = (req, _res, next) => {
   const { status } = req.body.data;
 
   if (status === "booked") {
@@ -169,6 +169,24 @@ const isStatusUnkown = (req, res, next) => {
   }
 };
 
+
+const validateMobileNumber = (req, _res, next) => {
+  const { mobile_number } = req.body.data;
+  // Regular expression for the xxx-xxx-xxxx pattern
+  const mobileNumberPattern = /^\d{3}-\d{3}-\d{4}$/;
+
+  // Check if the mobile number parameter in the request matches the pattern
+  if (!mobileNumberPattern.test(mobile_number)) {
+    next({
+      status : 400,
+      message : "mobile number needs to be numbers in the pattern xxx-xxx-xxxx"
+    })
+  }
+
+  // If the pattern is valid, continue with the next middleware or route handler
+  next();
+}
+
 module.exports = {
   peopleValidator,
   dateValidator,
@@ -180,4 +198,5 @@ module.exports = {
   isStatusBooked,
   isStatusAlreadyFinshed,
   isStatusUnkown,
+  validateMobileNumber
 };

@@ -11,6 +11,7 @@ const {
   isStatusBooked,
   isStatusAlreadyFinshed,
   isStatusUnkown,
+  validateMobileNumber,
 } = require("../errors/reservationValidators");
 const service = require("./reservations.service");
 
@@ -68,6 +69,7 @@ module.exports = {
     isDateATuesday,
     isDuringBusinessHours,
     isStatusBooked,
+    validateMobileNumber,
     asyncErrorBoundary(create),
   ],
   read: [reservationExist(service.read), asyncErrorBoundary(read)],
