@@ -32,25 +32,21 @@ const ReservationsList = ({
   const setReservationsDisplayDateBackOneDay = async () => {
     if (dateParam) {
       setDateParam((prevDate) => {
-         //this date is one behind one day
-         let displayDate = new Date(prevDate);
-         displayDate.setDate(displayDate.getDate() + 1);
-         let trueDate = new Date(displayDate)
-         trueDate.setDate(trueDate.getDate() - 1);
-         // make sure the date is useable
-         trueDate = asDateString(trueDate);
-         return trueDate;
+        let displayDate = new Date(prevDate);
+        displayDate.setDate(displayDate.getDate() - 1);
+        // make sure the date is useable
+        displayDate = asDateString(displayDate);
+        return displayDate;
       });
     } else {
+
       setDateToDisplayReservationsOn((prevDate) => {
         //this date is one behind one day
         let displayDate = new Date(prevDate);
-        displayDate.setDate(displayDate.getDate() + 1);
-        let trueDate = new Date(displayDate)
-        trueDate.setDate(trueDate.getDate() - 1);
+        displayDate.setDate(displayDate.getDate() - 1);
         // make sure the date is useable
-        trueDate = asDateString(trueDate);
-        return trueDate;
+        displayDate = asDateString(displayDate);
+        return displayDate;
       });
     }
   };
@@ -59,25 +55,19 @@ const ReservationsList = ({
   const setReservationsDisplayDateFowardOneDay = () => {
     if (dateParam) {
       setDateParam((nextDate) => {
-         //this date is one behind one day
-         let displayDate = new Date(nextDate);
-         displayDate.setDate(displayDate.getDate() + 1);
-         let trueDate = new Date(displayDate)
-         trueDate.setDate(trueDate.getDate() + 1);
-         // make sure the date is useable
-         trueDate = asDateString(trueDate);
-         return trueDate;
+        let displayDate = new Date(nextDate);
+        displayDate.setDate(displayDate.getDate() + 1);
+        // make sure the date is useable
+        displayDate = asDateString(displayDate);
+        return displayDate;
       });
     } else {
       setDateToDisplayReservationsOn((nextDate) => {
-        //this date is one behind one day
         let displayDate = new Date(nextDate);
         displayDate.setDate(displayDate.getDate() + 1);
-        let trueDate = new Date(displayDate)
-        trueDate.setDate(trueDate.getDate() + 1);
         // make sure the date is useable
-        trueDate = asDateString(trueDate);
-        return trueDate;
+        displayDate = asDateString(displayDate);
+        return displayDate;
       });
     }
   };
